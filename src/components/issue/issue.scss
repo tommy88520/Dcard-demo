@@ -1,0 +1,10 @@
+.issue-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+
+  &__box {
+    width: 33%;
+    border: 1px solid black;
+  }
+}

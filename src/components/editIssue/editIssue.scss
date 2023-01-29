@@ -1,0 +1,14 @@
+.edit-container {
+  &__mobile-editor {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    &__mobile-editor {
+      display: block;
+    }
+    &__desktop-editor {
+      display: none;
+    }
+  }
+}

@@ -39,6 +39,7 @@
         "endOfLine": "auto",
         "singleQuote": true
       }
-    ]
+    ],
+    "react/prop-types": 0
   }
 }

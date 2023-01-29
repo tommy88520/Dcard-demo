@@ -1,0 +1,24 @@
+.navigation-link {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &__logo-container {
+    display: flex;
+    align-items: flex-end;
+    h3 {
+      margin-left: 15px;
+    }
+  }
+  &__container {
+    display: flex;
+    align-items: center;
+  }
+  &__container-link{
+    font-family: 'Oswald', sans-serif;
+    padding-right: 10px;
+  }
+  &__sign-in {
+    display: flex;
+  }
+}
