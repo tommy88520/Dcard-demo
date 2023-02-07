@@ -22,7 +22,7 @@ export interface UserDataState {
 
 export interface UserRepoState {
   userRepo: string[];
-  getUserRepo: () => void;
+  getUserRepo: (e) => void;
 }
 
 export interface RepoAllIssueState {
@@ -36,6 +36,17 @@ export interface RepoAllIssueState {
     body: string;
     created_at: Date;
   }[];
+  getIssueQuery: {
+    repo: string;
+    q: string;
+    label: string;
+    params: {
+      sort: string;
+      order: string;
+      per_page: number;
+      page: number;
+    };
+  };
   getRepoAllIssues: (e) => void;
 }
 

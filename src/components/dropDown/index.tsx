@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import type { MenuProps } from 'antd';
 import { Select } from 'antd';
-import { Link, useParams } from 'react-router-dom';
-// import { useAllIssueStore } from '~/store/userStore';
 import { useAllIssueStore } from '~/store/userStore';
 
 interface IDropProps {
@@ -10,24 +7,10 @@ interface IDropProps {
 }
 
 const DropdownItem: React.FC<IDropProps> = ({ dropDownOption }) => {
-  const params = useParams();
   const { getRepoAllIssues } = useAllIssueStore((state) => state);
-  const { name } = params;
 
   const onChange = (value: string) => {
-    const query = {
-      repo: name,
-      query: {
-        state: 'open',
-        labels: value,
-        sort: 'created',
-        direction: 'desc',
-        per_page: 10,
-        page: 1,
-      },
-    };
-
-    getRepoAllIssues(query);
+    getRepoAllIssues({ label: value });
   };
 
   const onSearch = (value: string) => {

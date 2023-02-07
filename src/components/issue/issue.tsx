@@ -1,9 +1,10 @@
 import React, { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { CloseCircleOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import DropdownItem from '../dropDown';
 import EditIssueArea from '~/routes/editIssue';
+import SearchItem from '../search';
 import { updateIssueStore } from '~/store/issueStore';
 
 import './issue.scss';
@@ -56,12 +57,14 @@ const IssueItem: FC<IAllIssue> = ({ repoAllIssues }) => {
         state: 'closed',
       },
     };
+
     updateIssue(query, name);
   };
   return (
     <div>
       <DropdownItem dropDownOption={dropDownOption} />
       <EditIssueArea issueProp={createIssueProp} />
+      <SearchItem />
       {repoAllIssues.length ? (
         <div className='issue-item'>
           {repoAllIssues.map((item, index) => {
@@ -73,9 +76,10 @@ const IssueItem: FC<IAllIssue> = ({ repoAllIssues }) => {
                   <Button
                     type='primary'
                     shape='circle'
-                    icon={<CloseCircleOutlined />}
+                    icon={<CloseOutlined />}
                     ghost={true}
                     onClick={() => deleteIssue(item.number)}
+                    className='delete-button'
                   />
                 </Tooltip>
                 <div>

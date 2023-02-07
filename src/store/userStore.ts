@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import produce from 'immer';
 import { devtools, persist } from 'zustand/middleware';
 import { UserDataState, UserRepoState, RepoAllIssueState } from './state';
 // import Swal from 'sweetalert2/dist/sweetalert2.js';
@@ -12,7 +13,7 @@ const userRequest = axios.create({
     Accept: 'application/vnd.github+json',
   },
 });
-export const useUserStore = create<UserDataState>()(
+const useUserStore = create<UserDataState>()(
   devtools(
     persist(
       (set) => ({
@@ -48,17 +49,20 @@ export const useUserStore = create<UserDataState>()(
     ),
   ),
 );
-export const useRepoStore = create<UserRepoState>()(
+const useRepoStore = create<UserRepoState>()(
   devtools(
     persist(
       (set) => ({
         userRepo: [],
-        getUserRepo: async () => {
+        getUserRepo: async (page) => {
           const token = JSON.parse(localStorage.getItem('dcard-login') || '{}');
           await userRequest
             .get('user/getRepos', {
               headers: {
                 Authorization: `Bearer ${token}`,
+              },
+              params: {
+                page,
               },
             })
             .then((res) => {
@@ -75,44 +79,59 @@ export const useRepoStore = create<UserRepoState>()(
     ),
   ),
 );
-export const useAllIssueStore = create<RepoAllIssueState>()(
+const useAllIssueStore = create<RepoAllIssueState>()(
   devtools(
-    persist(
-      (set, get) => ({
-        repoAllIssues: [
-          {
-            title: '',
-            number: 0,
-            label: {
-              name: '',
-              description: '',
-            },
-            body: '',
-            created_at: new Date(),
+    // persist(
+    (set, get) => ({
+      repoAllIssues: [
+        {
+          title: '',
+          number: 0,
+          label: {
+            name: '',
+            description: '',
           },
-        ],
-        getRepoAllIssues: async (query) => {
-          const token = JSON.parse(localStorage.getItem('dcard-login') || '{}');
-          await userRequest
-            .get('user/getAllIssues', {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              params: query,
-            })
-            .then((res) => {
-              console.log('dddfffgad');
-
-              set(() => ({ repoAllIssues: res.data }));
-            })
-            .catch((error) => {
-              console.log('未登入or登入失敗');
-            });
+          body: '',
+          created_at: new Date(),
         },
-      }),
-      {
-        name: 'user-AllIssues',
+      ],
+      getIssueQuery: {
+        repo: '',
+        q: '',
+        label: '',
+        params: {
+          sort: 'created',
+          order: 'desc',
+          per_page: 10,
+          page: 1,
+        },
       },
-    ),
+      getRepoAllIssues: async (query) => {
+        const data = get().getIssueQuery;
+        set(() => ({ getIssueQuery: { ...data, ...query } }));
+
+        const token = JSON.parse(localStorage.getItem('dcard-login') || '{}');
+        await userRequest
+          .get('user/searchIssue', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            params: get().getIssueQuery,
+          })
+          .then((res) => {
+            console.log(res.data);
+
+            set(() => ({ repoAllIssues: res.data }));
+          })
+          .catch((error) => {
+            console.log('未登入or登入失敗');
+          });
+      },
+    }),
+    //   {
+    //     name: 'user-AllIssues',
+    //   },
+    // ),
   ),
 );
+export { useAllIssueStore, useUserStore, useRepoStore };

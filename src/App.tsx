@@ -6,7 +6,8 @@ const Home = lazy(() => import('./routes/home/home'));
 const SignIn = lazy(() => import('./routes/signIn'));
 const Repo = lazy(() => import('./routes/repo'));
 const Issue = lazy(() => import('./routes/issue'));
-const EditIssue = lazy(() => import('./routes/editIssue'));
+const Example2 = lazy(() => import('./routes/testPost'));
+const NotFound = lazy(() => import('~/components/404'));
 import Spinner from './components/spinner/spinner';
 
 import 'antd/dist/reset.css';
@@ -31,9 +32,10 @@ function App() {
         <Route path='/' element={<Navigation />}>
           <Route index element={<Home />} />
           <Route path='sign-in' element={<SignIn />} />
-          {/* <Route path='/repo/:name/:issue' element={<EditIssue />} /> */}
           <Route path='/repo/:name' element={<Issue />} />
           <Route path='repo' element={<Repo />} />
+          <Route path='post' element={<Example2 />} />
+          <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>
     </Suspense>

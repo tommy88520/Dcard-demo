@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import 'sweetalert2/src/sweetalert2.scss';
 import { devtools, persist } from 'zustand/middleware';
 import { IssueSortState, GetIssueDetail, CreateIssue, UpdateIssue } from './state';
 import { useAllIssueStore } from './userStore';
@@ -7,6 +9,17 @@ const userRequest = axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND_BASE_URL,
   headers: {
     Accept: 'application/vnd.github+json',
+  },
+});
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
   },
 });
 
@@ -61,18 +74,13 @@ export const createIssueStore = create<CreateIssue>()(
         })
         .then((res) => {
           set(() => ({ messages: res.data }));
-          const query = {
-            repo: name,
-            query: {
-              state: 'open',
-              labels: '',
-              sort: 'created',
-              direction: 'desc',
-              per_page: 10,
-              page: 1,
-            },
-          };
-          useAllIssueStore.getState().getRepoAllIssues(query);
+          const { getRepoAllIssues, getIssueQuery } = useAllIssueStore.getState();
+          Toast.fire({
+            icon: 'success',
+            title: 'Signed in successfully',
+          }).then((result) => {
+            getRepoAllIssues(getIssueQuery);
+          });
         })
         .catch((error) => {
           console.log('未登入or登入失敗');
@@ -94,18 +102,14 @@ export const updateIssueStore = create<UpdateIssue>()(
         })
         .then((res) => {
           set(() => ({ updateMessages: res.data }));
-          const query = {
-            repo: name,
-            query: {
-              state: 'open',
-              labels: '',
-              sort: 'created',
-              direction: 'desc',
-              per_page: 10,
-              page: 1,
-            },
-          };
-          useAllIssueStore.getState().getRepoAllIssues(query);
+          const { getRepoAllIssues, getIssueQuery } = useAllIssueStore.getState();
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Signed in successfully',
+          }).then((result) => {
+            getRepoAllIssues(getIssueQuery);
+          });
         })
         .catch((error) => {
           console.log('未登入or登入失敗');

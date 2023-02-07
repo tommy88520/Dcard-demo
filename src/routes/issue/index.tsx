@@ -8,21 +8,10 @@ const Issue = () => {
   const RepoLoading = false;
   const params = useParams();
   const { name } = params;
-  const { getRepoAllIssues, repoAllIssues } = useAllIssueStore((state) => state);
+  const { getRepoAllIssues, repoAllIssues, getIssueQuery } = useAllIssueStore((state) => state);
 
   useEffect(() => {
-    const query = {
-      repo: name,
-      query: {
-        state: 'open',
-        labels: '',
-        sort: 'created',
-        direction: 'desc',
-        per_page: 10,
-        page: 1,
-      },
-    };
-    getRepoAllIssues(query);
+    getRepoAllIssues({ repo: name });
   }, []);
   return (
     <Fragment>{RepoLoading ? <Spinner /> : <IssueItem repoAllIssues={repoAllIssues} />}</Fragment>

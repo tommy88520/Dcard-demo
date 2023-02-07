@@ -1,28 +1,57 @@
-.sign-in {
+.login-container {
+  box-sizing: border-box;
   display: flex;
-  height: 80vh;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  &__form {
-    width: 40%;
-    margin: 0 auto;
-    border: 1px solid #000;
-    border-radius: 10px;
-    padding: 20px;
-  }
-  .ant-input-affix-wrapper ,.ant-input {
-    border: 0;
-    border-bottom: 1px solid #000;
-    border-radius: 0;
-  }
-  .ant-form-item-control-input-content {
+  &__box {  
+    position: relative;
     display: flex;
-    justify-content: flex-end;
+    align-items: flex-end;
+    overflow: hidden;
+    padding: 1rem;
+    text-align: center;
+    color: whitesmoke;
+    height: 500px;
+    background-color: whitesmoke;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1), 
+      0 2px 2px rgba(0,0,0,0.1), 
+      0 4px 4px rgba(0,0,0,0.1), 
+      0 8px 8px rgba(0,0,0,0.1),
+      0 16px 16px rgba(0,0,0,0.1);
+    background-image: url('../../assets/dcard.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      line-height: 1.2;
+      color: #000;
+    }
+    p {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-style: italic;
+      line-height: 1.35;
+      color: transparent;
+      transition: .5s;
+    }
+    &:hover {
+      .login-container__content{
+        transform: translateY(0px);
+        transition: .5s;
+        p {
+          color: #000;
+        }
+      }
+    }
   }
-  &__google-login {
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    display: flex;
-    justify-content: flex-end
+    padding: 1rem;
+    transform: translateY(120px);
+    transition: .5s;
   }
 }
