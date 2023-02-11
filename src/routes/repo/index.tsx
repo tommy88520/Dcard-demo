@@ -14,9 +14,9 @@ const Repo = () => {
     data,
     status,
     error,
-  } = useInfiniteQuery('/posts', ({ pageParam = 1 }) => getUserRepo(pageParam), {
+  } = useInfiniteQuery('/repo', ({ pageParam = 1 }) => getUserRepo(pageParam), {
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage ? allPages.length + 1 : undefined;
+      return lastPage.length ? allPages.length + 1 : undefined;
     },
   });
   const intObserver = useRef();
@@ -37,21 +37,23 @@ const Repo = () => {
     },
     [isFetchingNextPage, fetchNextPage, hasNextPage],
   );
-  const content = data?.pages.map((pg, i) => {
-    return <Directory userRepo={userRepo} key={i} />;
-    // return pg.map((post, i) => {
-    //   if (pg.length === i + 1) {
-    //     return <Post ref={lastPostRef} key={post.id} post={post} />;
-    //   }
-    //   return <Post key={post.id} post={post} />;
-    // });
+  const content = data?.pages.map((userRepo) => {
+    return userRepo.map((post, i) => {
+      if (userRepo.length === i + 1) {
+        return <Directory ref={lastPostRef} key={i} post={post} />;
+      }
+      return <Directory key={i} post={post} />;
+    });
   });
   // useEffect(() => {
   //   if (localStorage.getItem('dcard-login')) getUserRepo(2);
   // }, []);
   return (
-    <Fragment>{status === 'error' ? <Spinner /> : <Directory userRepo={userRepo} />}</Fragment>
+    <Fragment>
+      {status === 'error' ? <Spinner /> : <div className='repo-container'>{content}</div>}
+    </Fragment>
   );
+  // return <Fragment>{status === 'error' ? <Spinner /> : <Directory ref={lastPostRef} data={data} />}</Fragment>;
 };
 
 export default Repo;

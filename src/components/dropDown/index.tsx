@@ -10,7 +10,18 @@ const DropdownItem: React.FC<IDropProps> = ({ dropDownOption }) => {
   const { getRepoAllIssues } = useAllIssueStore((state) => state);
 
   const onChange = (value: string) => {
-    getRepoAllIssues({ label: value });
+    getRepoAllIssues(
+      {
+        label: value,
+        params: {
+          sort: 'created',
+          order: 'desc',
+          per_page: 10,
+          page: 1,
+        },
+      },
+      'search',
+    );
   };
 
   const onSearch = (value: string) => {

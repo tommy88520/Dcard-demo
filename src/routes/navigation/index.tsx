@@ -12,10 +12,6 @@ const Navigation = () => {
   const { userData } = useUserStore((state) => state);
   const linkData = [
     {
-      url: '',
-      text: 'Home',
-    },
-    {
       url: 'repo',
       text: 'Repo',
     },
@@ -47,7 +43,7 @@ const Navigation = () => {
             </Link>
           ) : (
             <div className='navigation-link__sign-in'>
-              <Link className='navigation-link__container-link' to='/sign-in'>
+              <Link className='navigation-link__container-link' to='/'>
                 SignIN
               </Link>
             </div>

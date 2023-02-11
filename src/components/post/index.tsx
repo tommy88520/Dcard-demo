@@ -1,6 +1,6 @@
 import React from 'react';
-
-const Post = React.forwardRef<HTMLInputElement>(({ post }, ref) => {
+import './post.scss';
+const Post = React.forwardRef(({ post }, ref) => {
   const postBody = (
     <>
       <h2>{post.title}</h2>
@@ -13,6 +13,7 @@ const Post = React.forwardRef<HTMLInputElement>(({ post }, ref) => {
 
   return content;
 });
+
 Post.displayName = 'Post';
 
 export default Post;

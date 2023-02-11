@@ -4,8 +4,11 @@
   flex-wrap: wrap;
   justify-content: space-between;
   &__box {
-    width: 33%;
-    height: 100px;
+    width: 50%;
+    height: 300px;
     border: 1px  solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

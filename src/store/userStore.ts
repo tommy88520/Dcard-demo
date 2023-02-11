@@ -1,9 +1,8 @@
 import { create } from 'zustand';
 import axios from 'axios';
-import produce from 'immer';
 import { devtools, persist } from 'zustand/middleware';
 import { UserDataState, UserRepoState, RepoAllIssueState } from './state';
-// import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 import 'sweetalert2/src/sweetalert2.scss';
 import { useLoginStore } from '~/store';
 
@@ -35,10 +34,10 @@ const useUserStore = create<UserDataState>()(
             })
             .then((res) => {
               set(() => ({ userData: res.data }));
+              console.log(res.data);
               useLoginStore.getState().toggleLogin();
             })
             .catch((error) => {
-              console.log('未登入or登入失敗');
               useLoginStore.getState().toggleLogOut();
             });
         },
@@ -56,7 +55,7 @@ const useRepoStore = create<UserRepoState>()(
         userRepo: [],
         getUserRepo: async (page) => {
           const token = JSON.parse(localStorage.getItem('dcard-login') || '{}');
-          await userRequest
+          const result = await userRequest
             .get('user/getRepos', {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -67,10 +66,12 @@ const useRepoStore = create<UserRepoState>()(
             })
             .then((res) => {
               set((state) => ({ userRepo: (state.userRepo = res.data) }));
+              return res.data;
             })
             .catch((error) => {
               console.log('未登入or登入失敗');
             });
+          return result;
         },
       }),
       {
@@ -83,18 +84,7 @@ const useAllIssueStore = create<RepoAllIssueState>()(
   devtools(
     // persist(
     (set, get) => ({
-      repoAllIssues: [
-        {
-          title: '',
-          number: 0,
-          label: {
-            name: '',
-            description: '',
-          },
-          body: '',
-          created_at: new Date(),
-        },
-      ],
+      repoAllIssues: [],
       getIssueQuery: {
         repo: '',
         q: '',
@@ -106,7 +96,12 @@ const useAllIssueStore = create<RepoAllIssueState>()(
           page: 1,
         },
       },
-      getRepoAllIssues: async (query) => {
+      dataStatus: {
+        loading: true,
+        hasNextPage: false,
+      },
+      setLoading: () => set((state) => ({ dataStatus: { ...state.dataStatus, loading: true } })),
+      getRepoAllIssues: async (query, type) => {
         const data = get().getIssueQuery;
         set(() => ({ getIssueQuery: { ...data, ...query } }));
 
@@ -119,13 +114,23 @@ const useAllIssueStore = create<RepoAllIssueState>()(
             params: get().getIssueQuery,
           })
           .then((res) => {
-            console.log(res.data);
-
-            set(() => ({ repoAllIssues: res.data }));
+            if (type === 'search') {
+              set(() => ({ repoAllIssues: res.data }));
+            } else {
+              set((state) => ({ repoAllIssues: [...state.repoAllIssues, ...res.data] }));
+            }
+            set(() => ({
+              dataStatus: { loading: false, hasNextPage: Boolean(res.data.length) },
+            }));
+            set((state) => ({ dataStatus: { ...state.dataStatus, loading: false } }));
+            console.log(get().repoAllIssues);
           })
           .catch((error) => {
             console.log('未登入or登入失敗');
           });
+      },
+      setRepoAllIssues: async (data) => {
+        set(() => ({ repoAllIssues: data }));
       },
     }),
     //   {

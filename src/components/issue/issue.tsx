@@ -1,11 +1,11 @@
-import React, { FC, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { CloseOutlined } from '@ant-design/icons';
-import { Button, Tooltip } from 'antd';
 import DropdownItem from '../dropDown';
 import EditIssueArea from '~/routes/editIssue';
 import SearchItem from '../search';
-import { updateIssueStore } from '~/store/issueStore';
+import { useAllIssueStore } from '~/store/userStore';
+import IssueDashBoard from '~/components/IssueDashBoard';
+import Spinner from '~/components/spinner/spinner';
 
 import './issue.scss';
 interface IAllIssue {
@@ -21,8 +21,50 @@ interface IAllIssue {
   }[];
 }
 
-const IssueItem: FC<IAllIssue> = ({ repoAllIssues }) => {
-  const { updateIssue } = updateIssueStore((state) => state);
+const IssueItem = () => {
+  const params = useParams();
+  const { name } = params;
+  const [pageNum, setPageNum] = useState(1);
+  const { getRepoAllIssues, repoAllIssues, setLoading, dataStatus } = useAllIssueStore(
+    (state) => state,
+  );
+
+  useEffect(() => {
+    setLoading();
+    getRepoAllIssues(
+      {
+        repo: name,
+        params: {
+          sort: 'created',
+          order: 'desc',
+          per_page: 10,
+          page: pageNum,
+        },
+      },
+      'page',
+    );
+    console.log(repoAllIssues);
+  }, [pageNum]);
+  const { loading, hasNextPage } = dataStatus;
+
+  const issueObserver = useRef();
+  const lastPostRef = useCallback(
+    (post) => {
+      if (loading) return;
+
+      if (issueObserver.current) issueObserver.current.disconnect();
+
+      issueObserver.current = new IntersectionObserver((posts) => {
+        if (posts[0].isIntersecting && hasNextPage) {
+          console.log('We are near the last post!');
+          setPageNum((prev) => prev + 1);
+        }
+      });
+
+      if (post) issueObserver.current.observe(post);
+    },
+    [loading, hasNextPage],
+  );
   const dropDownOption = [
     {
       label: 'All',
@@ -45,55 +87,26 @@ const IssueItem: FC<IAllIssue> = ({ repoAllIssues }) => {
     button: '新增',
     number: 0,
   };
-  const updateIssueProp = {
-    button: '修改',
+  const Content = () => {
+    return (
+      <div className='issue-item'>
+        {repoAllIssues &&
+          repoAllIssues.map((post, i) => {
+            if (repoAllIssues.length === i + 1) {
+              return <IssueDashBoard ref={lastPostRef} key={i} post={post} />;
+            }
+            return <IssueDashBoard key={i} post={post} />;
+          })}
+      </div>
+    );
   };
-  const { name } = useParams();
-  const deleteIssue = (e) => {
-    const query = {
-      repo: name,
-      issue_number: e,
-      issue: {
-        state: 'closed',
-      },
-    };
 
-    updateIssue(query, name);
-  };
   return (
     <div>
       <DropdownItem dropDownOption={dropDownOption} />
       <EditIssueArea issueProp={createIssueProp} />
       <SearchItem />
-      {repoAllIssues.length ? (
-        <div className='issue-item'>
-          {repoAllIssues.map((item, index) => {
-            return (
-              <div className='issue-item__box' key={index} aria-hidden>
-                <h3>{item.title}</h3>
-                <p>{item.number}</p>
-                <Tooltip title='delete'>
-                  <Button
-                    type='primary'
-                    shape='circle'
-                    icon={<CloseOutlined />}
-                    ghost={true}
-                    onClick={() => deleteIssue(item.number)}
-                    className='delete-button'
-                  />
-                </Tooltip>
-                <div>
-                  <p>{item.label.name}</p>
-                </div>
-                <p>{item.body}</p>
-                <EditIssueArea issueProp={{ ...updateIssueProp, number: item.number }} />
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div>沒有資料</div>
-      )}
+      <Content />
     </div>
   );
 };

@@ -22,7 +22,7 @@ export interface UserDataState {
 
 export interface UserRepoState {
   userRepo: string[];
-  getUserRepo: (e) => void;
+  getUserRepo: any;
 }
 
 export interface RepoAllIssueState {
@@ -47,7 +47,13 @@ export interface RepoAllIssueState {
       page: number;
     };
   };
-  getRepoAllIssues: (e) => void;
+  setLoading: () => void;
+  dataStatus: {
+    loading: boolean;
+    hasNextPage: boolean;
+  };
+  getRepoAllIssues: any;
+  setRepoAllIssues: (e, i) => void;
 }
 
 export interface IssueSortState {

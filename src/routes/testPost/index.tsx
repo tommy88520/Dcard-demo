@@ -1,7 +1,9 @@
 import { useRef, useCallback } from 'react';
 import Post from '~/components/post';
 import { useInfiniteQuery } from 'react-query';
+import { useRepoStore } from '~/store/userStore';
 import axios from 'axios';
+import { log } from 'console';
 const api = axios.create({
   baseURL: 'https://jsonplaceholder.typicode.com',
 });
@@ -12,6 +14,7 @@ const getPostsPage = async (pageParam = 1, options = {}) => {
 };
 
 const Example2 = () => {
+  const { userRepo, getUserRepo } = useRepoStore((state) => state);
   const {
     fetchNextPage, //function
     hasNextPage, // boolean
@@ -19,8 +22,9 @@ const Example2 = () => {
     data,
     status,
     error,
-  } = useInfiniteQuery('/posts', ({ pageParam = 1 }) => getPostsPage(pageParam), {
+  } = useInfiniteQuery('/posts', ({ pageParam = 1 }) => getUserRepo(pageParam), {
     getNextPageParam: (lastPage, allPages) => {
+      console.log(allPages);
       return lastPage.length ? allPages.length + 1 : undefined;
     },
   });
@@ -47,6 +51,7 @@ const Example2 = () => {
   if (status === 'error') return <p className='center'>Error: {error.message}</p>;
 
   const content = data?.pages.map((pg) => {
+    console.log(pg);
     return pg.map((post, i) => {
       if (pg.length === i + 1) {
         return <Post ref={lastPostRef} key={post.id} post={post} />;
