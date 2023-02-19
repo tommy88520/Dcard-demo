@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { devtools, persist } from 'zustand/middleware';
 import { UserDataState, UserRepoState, RepoAllIssueState } from './state';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
-import 'sweetalert2/src/sweetalert2.scss';
 import { useLoginStore } from '~/store';
 
 const userRequest = axios.create({
@@ -34,7 +32,6 @@ const useUserStore = create<UserDataState>()(
             })
             .then((res) => {
               set(() => ({ userData: res.data }));
-              console.log(res.data);
               useLoginStore.getState().toggleLogin();
             })
             .catch((error) => {
@@ -114,7 +111,7 @@ const useAllIssueStore = create<RepoAllIssueState>()(
             params: get().getIssueQuery,
           })
           .then((res) => {
-            if (type === 'search') {
+            if (type === 'search' || query.params.page === 1) {
               set(() => ({ repoAllIssues: res.data }));
             } else {
               set((state) => ({ repoAllIssues: [...state.repoAllIssues, ...res.data] }));
@@ -122,10 +119,10 @@ const useAllIssueStore = create<RepoAllIssueState>()(
             set(() => ({
               dataStatus: { loading: false, hasNextPage: Boolean(res.data.length) },
             }));
-            set((state) => ({ dataStatus: { ...state.dataStatus, loading: false } }));
-            console.log(get().repoAllIssues);
+            // set((state) => ({ dataStatus: { ...state.dataStatus, loading: false } }));
           })
           .catch((error) => {
+            useLoginStore.getState().toggleLogOut();
             console.log('未登入or登入失敗');
           });
       },

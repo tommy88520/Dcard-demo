@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, Modal, Checkbox, Form, Input, Select } from 'antd';
+import { Button, Modal, Form, Input, Select } from 'antd';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { createIssueStore, updateIssueStore, useGetIssueDetailStore } from '~/store/issueStore';
-// import { useAllIssueStore } from '~/store/userStore';
 import './editIssue.scss';
 import { useParams } from 'react-router-dom';
 
@@ -15,14 +14,12 @@ interface Values {
     body: any;
   };
 }
-
 interface IProps {
   issueProp: {
     button: string;
     number: number;
   };
 }
-
 interface CollectionCreateFormProps {
   open: boolean;
   onCreate: (values: Values) => void;
@@ -46,7 +43,6 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   const editorRef = React.createRef<any>();
   const mobileRef = React.createRef<any>();
   const { name } = useParams();
-  // const { getIssueDetail, issueDetail } = useGetIssueDetailStore((state) => state);
 
   const defaultForm = {
     modifier: 'public',
@@ -56,8 +52,10 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
 
   useEffect(() => {
     if (form && issueDetail && number) form.setFieldsValue(defaultForm);
-    if (editorRef.current && issueDetail && number)
+    if (editorRef.current && mobileRef.current && issueDetail && number) {
       editorRef.current.getInstance().setMarkdown(issueDetail.body);
+      mobileRef.current.getInstance().setMarkdown(issueDetail.body);
+    }
   }, [form, issueDetail]);
 
   return (
@@ -75,7 +73,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
             const data =
               editorRef.current.editorInst.getMarkdown() ||
               mobileRef.current.editorInst.getMarkdown();
-            if (data.length < 5) {
+            if (data.length < 30) {
               setBodyCheck(false);
               alert('描述字數不夠');
               return;
@@ -133,10 +131,10 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
       </div>
       <div className='edit-container__mobile-editor'>
         <Editor
-          initialValue={issueDetail.body || ''}
+          initialValue=''
           previewStyle='vertical'
           height='200px'
-          initialEditType='wysiwyg'
+          initialEditType='markdown'
           ref={mobileRef}
           toolbarItems={[]}
         />
@@ -175,7 +173,9 @@ const EditIssueArea: FC<IProps> = ({ issueProp }) => {
       repo: name,
       issue_number: number,
     };
-    getIssueDetail(query);
+    if (number) {
+      getIssueDetail(query);
+    }
     setOpen(true);
   };
   return (

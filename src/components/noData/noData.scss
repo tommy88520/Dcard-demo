@@ -1,0 +1,30 @@
+.typing {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.typing-effect {
+  width: 60ch;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid;
+  font-family: monospace;
+  font-size: 2em;
+  animation: typing 4s steps(60,start) infinite normal, effect 1.5s infinite normal;
+  margin-bottom: 20px;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes effect {
+  50% {
+    border-color: transparent;
+  }
+}

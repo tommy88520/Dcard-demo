@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import DropdownItem from '../dropDown';
 import EditIssueArea from '~/routes/editIssue';
 import SearchItem from '../search';
-import { useAllIssueStore } from '~/store/userStore';
 import IssueDashBoard from '~/components/IssueDashBoard';
-import Spinner from '~/components/spinner/spinner';
-
+// import Spinner from '~/components/spinner/spinner';
+import NoData from '../noData';
+import { useAllIssueStore } from '~/store/userStore';
 import './issue.scss';
 interface IAllIssue {
   repoAllIssues: {
@@ -28,7 +28,6 @@ const IssueItem = () => {
   const { getRepoAllIssues, repoAllIssues, setLoading, dataStatus } = useAllIssueStore(
     (state) => state,
   );
-
   useEffect(() => {
     setLoading();
     getRepoAllIssues(
@@ -43,11 +42,11 @@ const IssueItem = () => {
       },
       'page',
     );
-    console.log(repoAllIssues);
   }, [pageNum]);
+
   const { loading, hasNextPage } = dataStatus;
 
-  const issueObserver = useRef();
+  const issueObserver = useRef<IntersectionObserver | null>(null);
   const lastPostRef = useCallback(
     (post) => {
       if (loading) return;
@@ -84,29 +83,31 @@ const IssueItem = () => {
     },
   ];
   const createIssueProp = {
-    button: '新增',
+    button: 'Add Issue',
     number: 0,
   };
   const Content = () => {
     return (
       <div className='issue-item'>
         {repoAllIssues &&
-          repoAllIssues.map((post, i) => {
+          repoAllIssues?.map((post, i) => {
             if (repoAllIssues.length === i + 1) {
-              return <IssueDashBoard ref={lastPostRef} key={i} post={post} />;
+              return <IssueDashBoard key={i} ref={lastPostRef} post={post} />;
             }
             return <IssueDashBoard key={i} post={post} />;
           })}
       </div>
     );
   };
-
   return (
-    <div>
-      <DropdownItem dropDownOption={dropDownOption} />
-      <EditIssueArea issueProp={createIssueProp} />
-      <SearchItem />
-      <Content />
+    <div className='issue-section'>
+      <div className='issue-section__header'>
+        <DropdownItem dropDownOption={dropDownOption} />
+        <SearchItem />
+        <EditIssueArea issueProp={createIssueProp} />
+      </div>
+      {repoAllIssues.length ? <Content /> : <NoData />}
+      {!hasNextPage && <div className='issue-section__no-more'>No more data available!</div>}
     </div>
   );
 };

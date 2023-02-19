@@ -1,5 +1,4 @@
 import { Input } from 'antd';
-import { useState } from 'react';
 import { useAllIssueStore } from '~/store/userStore';
 
 const SearchItem = () => {
@@ -30,12 +29,12 @@ const SearchItem = () => {
       );
   };
   return (
-    <div>
+    <div className='search-input'>
       <Input.Search
         allowClear
         placeholder='input search text'
         onSearch={onSearch}
-        style={{ width: 200 }}
+        style={{ width: 400, paddingLeft: 10 }}
         maxLength={30}
         onChange={changeSearch}
       />

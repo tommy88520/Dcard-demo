@@ -4,6 +4,14 @@ export interface LoginState {
   toggleLogOut: () => void;
 }
 
+export interface MenuState {
+  menuState: {
+    initial: boolean;
+    clicked: boolean;
+  };
+  toggleMenu: (e) => void;
+}
+
 export interface UserDataState {
   userData: {
     id: string;

@@ -13,6 +13,7 @@
     "format": "npm run prettier:fix && npm run lint:fix"
   },
   "dependencies": {
+    "@react-spring/web": "^9.6.1",
     "@toast-ui/react-editor": "^3.2.2",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
@@ -21,10 +22,13 @@
     "antd": "^5.1.6",
     "axios": "^1.2.0",
     "dotenv": "^16.0.3",
+    "gsap": "^3.11.4",
     "immer": "^9.0.18",
     "localforage": "^1.10.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-gsap": "^3.2.1",
+    "react-markdown": "^8.0.5",
     "react-query": "^3.39.3",
     "react-router-dom": "6.7.0",
     "sass": "^1.57.1",

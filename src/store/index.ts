@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { LoginState } from './state';
+import { LoginState, MenuState } from './state';
 import { useUserStore } from './userStore';
 
 export const useLoginStore = create<LoginState>()(
@@ -28,4 +28,18 @@ export const useLoginStore = create<LoginState>()(
       { name: 'login' },
     ),
   ),
+);
+
+export const useAnimationStore = create<MenuState>()(
+  devtools((set, get) => ({
+    menuState: {
+      initial: false,
+      clicked: false,
+    },
+    toggleMenu: (query) => {
+      set(() => ({ menuState: query }));
+
+      console.log(get().menuState);
+    },
+  })),
 );

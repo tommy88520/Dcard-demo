@@ -3,11 +3,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: 'Oswald', sans-serif;
   &__logo-container {
     display: flex;
     align-items: flex-end;
     h3 {
+      margin: 0;
       margin-left: 15px;
+    }
+    justify-content: center;
+  }
+  &__logo {
+    img {
+      width: 80px;
     }
   }
   &__container {

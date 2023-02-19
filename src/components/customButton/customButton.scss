@@ -1,13 +1,16 @@
-.ant-btn {
-  background-color: #fff;
-  color: #000;
-  border: 1px solid #000;
-  height: 50px;
-  &:not(:disabled):hover {
-    background-color: #000;
-    color: #fff;
-  }
-  .github-logo {
-    width: 30px;
+.custom-button {
+  .ant-btn {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+    height: 50px;
+    font-family: 'Oswald', sans-serif;
+    &:not(:disabled):hover {
+      background-color: #000;
+      color: #fff;
+    }
+    .github-logo {
+      width: 30px;
+    }
   }
 }

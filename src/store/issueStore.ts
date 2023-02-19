@@ -3,7 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import 'sweetalert2/src/sweetalert2.scss';
 import { devtools, persist } from 'zustand/middleware';
-import { IssueSortState, GetIssueDetail, CreateIssue, UpdateIssue } from './state';
+import { GetIssueDetail, CreateIssue, UpdateIssue } from './state';
 import { useAllIssueStore } from './userStore';
 const userRequest = axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND_BASE_URL,
@@ -26,7 +26,7 @@ const Toast = Swal.mixin({
 export const useGetIssueDetailStore = create<GetIssueDetail>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         issueDetail: {
           title: '',
           number: 1,
@@ -62,9 +62,9 @@ export const useGetIssueDetailStore = create<GetIssueDetail>()(
 );
 
 export const createIssueStore = create<CreateIssue>()(
-  devtools((set, get) => ({
+  devtools((set) => ({
     messages: '',
-    createIssue: async (query, name) => {
+    createIssue: async (query) => {
       const token = JSON.parse(localStorage.getItem('dcard-login') || '{}');
       await userRequest
         .post('user/createIssue', query, {

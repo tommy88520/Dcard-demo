@@ -1,28 +1,36 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CustomButton from '~/components/customButton/customButton';
-import './signIn.scss';
-// import { logIn } from '../../features/userSlice';
+import { useUserStore } from '~/store/userStore';
+import { useLoginStore } from '~/store/';
 
-import { Form, Input } from 'antd';
+import './signIn.scss';
+
 const SignIn = () => {
-  const [form] = Form.useForm();
-  const onFinish = (values) => {
-    const user = {
-      username: values.email,
-      password: values.password,
-    };
-    // dispatch(logIn(user));
-  };
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search).get('token');
+  const { getUserData } = useUserStore((state) => state);
+  const { login } = useLoginStore((state) => state);
+
+  useEffect(() => {
+    if (params) localStorage.setItem('dcard-login', JSON.stringify(params));
+    getUserData();
+    if (login) navigate('/repo');
+  }, [login]);
   const handleLogin = async () => {
     window.open(`${import.meta.env.VITE_APP_BACKEND_BASE_URL}user/github/login`, '_self');
   };
   return (
     <div className='login-container'>
-      <div className='login-container__box'>
-        <div className='login-container__content'>
-          <h2>Management Your Repo</h2>
-          <p>It's the moment you've always dreamed of</p>
-          <CustomButton text='Github登入' onClick={handleLogin} />
+      <div className='login-container__box-background'>
+        <div className='login-container__box'></div>
+        <div className='login-container__box2'>
+          <div className='login-container__content'>
+            <h2>Management Your Repo</h2>
+            <p>It's the moment resolve an ISSUE</p>
+            <CustomButton text='Github登入' onClick={handleLogin} />
+          </div>
         </div>
       </div>
     </div>

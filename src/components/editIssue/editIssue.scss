@@ -1,4 +1,21 @@
 .edit-container {
+  display: flex;
+  justify-content: flex-end;
+  .ant-btn {
+    background-color: #fff;
+    color: #222222;
+    border: 1px solid #B9C6FF;;
+    &:not(:disabled):hover {
+      background-color: #B9C6FF;;
+      color: #222222;
+    }
+    .github-logo {
+      width: 30px;
+    }
+  }
+
+
+
   &__mobile-editor {
     display: none;
   }

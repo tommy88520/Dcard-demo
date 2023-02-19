@@ -1,8 +1,6 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import logo from '~/assets/crown.svg';
-// import CartIcon from '../../components/cartIcon/cart-icon';
-// import logo from '~/logo.svg';
+import logo from '~/assets/logo.b4d22f15.svg';
 import { useLoginStore } from '~/store';
 import { useUserStore } from '~/store/userStore';
 import './navigation.scss';
@@ -20,9 +18,10 @@ const Navigation = () => {
   const SignOut = () => {
     toggleLogOut();
   };
+
   return (
     <Fragment>
-      <div className='navigation-link'>
+      <header className='navigation-link'>
         <div className='navigation-link__logo-container'>
           <Link className='navigation-link__logo' to='/'>
             <img src={logo} alt='Logo' />
@@ -38,7 +37,7 @@ const Navigation = () => {
             );
           })}
           {login ? (
-            <Link className='navigation-link__container-link' onClick={SignOut} to={'/'}>
+            <Link className='navigation-link__container-link' onClick={SignOut} to='/'>
               SignOut
             </Link>
           ) : (
@@ -49,7 +48,7 @@ const Navigation = () => {
             </div>
           )}
         </div>
-      </div>
+      </header>
       <Outlet />
     </Fragment>
   );
