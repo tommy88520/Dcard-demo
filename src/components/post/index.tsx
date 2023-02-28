@@ -1,5 +1,11 @@
 import React from 'react';
 import './post.scss';
+
+interface iPost {
+  title: string;
+  body: string;
+  id: string;
+}
 const Post = React.forwardRef(({ post }, ref) => {
   const postBody = (
     <>

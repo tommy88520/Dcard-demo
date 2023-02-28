@@ -3,6 +3,7 @@ import axios from 'axios';
 import { devtools, persist } from 'zustand/middleware';
 import { UserDataState, UserRepoState, RepoAllIssueState } from './state';
 import { useLoginStore } from '~/store';
+import { setIssuePageStore } from './issueStore';
 
 const userRequest = axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND_BASE_URL,
@@ -78,62 +79,56 @@ const useRepoStore = create<UserRepoState>()(
   ),
 );
 const useAllIssueStore = create<RepoAllIssueState>()(
-  devtools(
-    // persist(
-    (set, get) => ({
-      repoAllIssues: [],
-      getIssueQuery: {
-        repo: '',
-        q: '',
-        label: '',
-        params: {
-          sort: 'created',
-          order: 'desc',
-          per_page: 10,
-          page: 1,
-        },
+  devtools((set, get) => ({
+    repoAllIssues: [],
+    getIssueQuery: {
+      repo: '',
+      q: '',
+      label: '',
+      params: {
+        sort: 'created',
+        order: 'desc',
+        per_page: 10,
+        page: 1,
       },
-      dataStatus: {
-        loading: true,
-        hasNextPage: false,
-      },
-      setLoading: () => set((state) => ({ dataStatus: { ...state.dataStatus, loading: true } })),
-      getRepoAllIssues: async (query, type) => {
-        const data = get().getIssueQuery;
-        set(() => ({ getIssueQuery: { ...data, ...query } }));
+      noCache: true,
+    },
+    dataStatus: {
+      loading: true,
+      hasNextPage: false,
+    },
+    setLoading: () => set((state) => ({ dataStatus: { ...state.dataStatus, loading: true } })),
+    getRepoAllIssues: async (query, type) => {
+      const data = get().getIssueQuery;
+      set(() => ({ getIssueQuery: { ...data, ...query } }));
 
-        const token = JSON.parse(localStorage.getItem('dcard-login') || '{}');
-        await userRequest
-          .get('user/searchIssue', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            params: get().getIssueQuery,
-          })
-          .then((res) => {
-            if (type === 'search' || query.params.page === 1) {
-              set(() => ({ repoAllIssues: res.data }));
-            } else {
-              set((state) => ({ repoAllIssues: [...state.repoAllIssues, ...res.data] }));
-            }
-            set(() => ({
-              dataStatus: { loading: false, hasNextPage: Boolean(res.data.length) },
-            }));
-            // set((state) => ({ dataStatus: { ...state.dataStatus, loading: false } }));
-          })
-          .catch((error) => {
-            useLoginStore.getState().toggleLogOut();
-            console.log('未登入or登入失敗');
-          });
-      },
-      setRepoAllIssues: async (data) => {
-        set(() => ({ repoAllIssues: data }));
-      },
-    }),
-    //   {
-    //     name: 'user-AllIssues',
-    //   },
-    // ),
-  ),
+      const token = JSON.parse(localStorage.getItem('dcard-login') || '{}');
+      await userRequest
+        .get('user/searchIssue', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: get().getIssueQuery,
+        })
+        .then((res) => {
+          if (type === 'search' || query.params.page === 1) {
+            set(() => ({ repoAllIssues: res.data }));
+            setIssuePageStore.getState().setIssuePageNumber(1);
+          } else {
+            set((state) => ({ repoAllIssues: [...state.repoAllIssues, ...res.data] }));
+          }
+          set(() => ({
+            dataStatus: { loading: false, hasNextPage: Boolean(res.data.length) },
+          }));
+        })
+        .catch((error) => {
+          useLoginStore.getState().toggleLogOut();
+          console.log('未登入or登入失敗');
+        });
+    },
+    setRepoAllIssues: async (data) => {
+      set(() => ({ repoAllIssues: data }));
+    },
+  })),
 );
 export { useAllIssueStore, useUserStore, useRepoStore };

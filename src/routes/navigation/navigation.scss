@@ -4,6 +4,9 @@
   justify-content: space-between;
   align-items: center;
   font-family: 'Oswald', sans-serif;
+  position: fixed;
+  width: 100vw;
+  z-index: 10;
   &__logo-container {
     display: flex;
     align-items: flex-end;
@@ -22,9 +25,27 @@
     display: flex;
     align-items: center;
   }
-  &__container-link{
+  &__container-link {
     font-family: 'Oswald', sans-serif;
     padding-right: 10px;
+    transition: .5s;
+    position: relative;
+    &:hover::after {
+      width: 80%;
+      transition: all .3s 0s ease;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      width: 0;
+      height: 0.0625rem;
+      background: #000;
+      transition: all .3s 0s ease;
+    }
   }
   &__sign-in {
     display: flex;

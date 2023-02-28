@@ -54,6 +54,7 @@ export interface RepoAllIssueState {
       per_page: number;
       page: number;
     };
+    noCache: boolean;
   };
   setLoading: () => void;
   dataStatus: {
@@ -61,7 +62,7 @@ export interface RepoAllIssueState {
     hasNextPage: boolean;
   };
   getRepoAllIssues: any;
-  setRepoAllIssues: (e, i) => void;
+  setRepoAllIssues: (e) => void;
 }
 
 export interface IssueSortState {
@@ -107,4 +108,9 @@ export interface CreateIssue {
 export interface UpdateIssue {
   updateMessages: string;
   updateIssue: (e, i) => void;
+}
+
+export interface IssuePageNumber {
+  issuePageNumber: number;
+  setIssuePageNumber: (e) => void;
 }

@@ -1,9 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
-import 'sweetalert2/src/sweetalert2.scss';
 import { devtools, persist } from 'zustand/middleware';
-import { GetIssueDetail, CreateIssue, UpdateIssue } from './state';
+import { GetIssueDetail, CreateIssue, UpdateIssue, IssuePageNumber } from './state';
 import { useAllIssueStore } from './userStore';
 const userRequest = axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND_BASE_URL,
@@ -11,19 +9,8 @@ const userRequest = axios.create({
     Accept: 'application/vnd.github+json',
   },
 });
-const Toast = Swal.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  timer: 1500,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer);
-    toast.addEventListener('mouseleave', Swal.resumeTimer);
-  },
-});
 
-export const useGetIssueDetailStore = create<GetIssueDetail>()(
+const useGetIssueDetailStore = create<GetIssueDetail>()(
   devtools(
     persist(
       (set) => ({
@@ -61,7 +48,7 @@ export const useGetIssueDetailStore = create<GetIssueDetail>()(
   ),
 );
 
-export const createIssueStore = create<CreateIssue>()(
+const createIssueStore = create<CreateIssue>()(
   devtools((set) => ({
     messages: '',
     createIssue: async (query) => {
@@ -75,12 +62,22 @@ export const createIssueStore = create<CreateIssue>()(
         .then((res) => {
           set(() => ({ messages: res.data }));
           const { getRepoAllIssues, getIssueQuery } = useAllIssueStore.getState();
-          Toast.fire({
-            icon: 'success',
-            title: 'Signed in successfully',
-          }).then((result) => {
-            getRepoAllIssues(getIssueQuery);
-          });
+          setTimeout(() => {
+            getRepoAllIssues(
+              {
+                ...getIssueQuery,
+                params: {
+                  sort: 'created',
+                  order: 'desc',
+                  per_page: 10,
+                  page: 1,
+                },
+                noCache: true,
+              },
+              'search',
+            );
+          }, 1000); //github api會延遲
+          setIssuePageStore.getState().setIssuePageNumber(1);
         })
         .catch((error) => {
           console.log('未登入or登入失敗');
@@ -89,7 +86,7 @@ export const createIssueStore = create<CreateIssue>()(
   })),
 );
 
-export const updateIssueStore = create<UpdateIssue>()(
+const updateIssueStore = create<UpdateIssue>()(
   devtools((set) => ({
     updateMessages: '',
     updateIssue: async (query, name) => {
@@ -103,13 +100,22 @@ export const updateIssueStore = create<UpdateIssue>()(
         .then((res) => {
           set(() => ({ updateMessages: res.data }));
           const { getRepoAllIssues, getIssueQuery } = useAllIssueStore.getState();
-
-          Toast.fire({
-            icon: 'success',
-            title: 'Signed in successfully',
-          }).then((result) => {
-            getRepoAllIssues(getIssueQuery);
-          });
+          setTimeout(() => {
+            getRepoAllIssues(
+              {
+                ...getIssueQuery,
+                params: {
+                  sort: 'created',
+                  order: 'desc',
+                  per_page: 10,
+                  page: 1,
+                },
+                noCache: true,
+              },
+              'search',
+            );
+          }, 1000); //github api會延遲
+          setIssuePageStore.getState().setIssuePageNumber(1);
         })
         .catch((error) => {
           console.log('未登入or登入失敗');
@@ -117,3 +123,14 @@ export const updateIssueStore = create<UpdateIssue>()(
     },
   })),
 );
+
+const setIssuePageStore = create<IssuePageNumber>()(
+  devtools((set) => ({
+    issuePageNumber: 1,
+    setIssuePageNumber: (page) => {
+      set(() => ({ issuePageNumber: page }));
+    },
+  })),
+);
+
+export { setIssuePageStore, updateIssueStore, createIssueStore, useGetIssueDetailStore };

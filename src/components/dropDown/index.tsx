@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Select } from 'antd';
+// import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { useAllIssueStore } from '~/store/userStore';
+// import { backToTop } from '~/utils/backToTop';
 
 interface IDropProps {
   dropDownOption: { label: string; value: string }[];
@@ -19,21 +21,18 @@ const DropdownItem: React.FC<IDropProps> = ({ dropDownOption }) => {
           per_page: 10,
           page: 1,
         },
+        noCache: false,
       },
       'search',
     );
   };
 
-  const onSearch = (value: string) => {
-    console.log('search:', value);
-  };
   return (
     <Select
       showSearch
       placeholder='Select a person'
       optionFilterProp='children'
       onChange={onChange}
-      onSearch={onSearch}
       filterOption={(input, option) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
       }

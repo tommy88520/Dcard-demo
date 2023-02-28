@@ -5,6 +5,8 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import { createIssueStore, updateIssueStore, useGetIssueDetailStore } from '~/store/issueStore';
 import './editIssue.scss';
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { backToTop } from '~/utils/backToTop';
 
 interface Values {
   repo: string;
@@ -53,8 +55,8 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   useEffect(() => {
     if (form && issueDetail && number) form.setFieldsValue(defaultForm);
     if (editorRef.current && mobileRef.current && issueDetail && number) {
-      editorRef.current.getInstance().setMarkdown(issueDetail.body);
-      mobileRef.current.getInstance().setMarkdown(issueDetail.body);
+      editorRef.current.getInstance().setMarkdown(issueDetail.body || '');
+      mobileRef.current.getInstance().setMarkdown(issueDetail.body || '');
     }
   }, [form, issueDetail]);
 
@@ -75,7 +77,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
               mobileRef.current.editorInst.getMarkdown();
             if (data.length < 30) {
               setBodyCheck(false);
-              alert('描述字數不夠');
+              Swal.fire('描述字數不夠');
               return;
             }
 
@@ -93,6 +95,14 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
             form.resetFields();
             editorRef.current.editorInst.reset();
             mobileRef.current.editorInst.reset();
+            backToTop();
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Your work has been saved',
+              showConfirmButton: false,
+              timer: 3000,
+            });
           })
           .catch((error) => {
             console.log('Validate Failed:', error);
@@ -119,7 +129,6 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
         <Editor
           initialValue=''
           previewStyle='vertical'
-          height='400px'
           initialEditType='markdown'
           ref={editorRef}
           toolbarItems={[

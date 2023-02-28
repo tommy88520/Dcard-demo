@@ -1,4 +1,5 @@
 .issue-section {
+  margin-top: 50px;
   padding: 0 10px;
   &__header {
     display: flex;
@@ -7,13 +8,16 @@
     }
     .search-input {
       margin-left: 10px;
+      .ant-input-search {
+        width: 400px;
+      }
     }
   }
   &__no-more {
-    width: 100%;
     text-align: center;
     color: #c4c4c4;
     margin: 30px 0;
+    line-height: 240px;
   }
   @media (max-width: 768px) {
     &__header {
@@ -22,6 +26,10 @@
     }
     .search-input {
       margin: 0px;
+      .ant-input-search {
+        width: 100%;
+        padding: 0 !important;
+      }
     }
   }
 }

@@ -1,12 +1,14 @@
 import React, { forwardRef, useEffect, useRef } from 'react';
-import gsap, { TimelineLite, Power2 } from 'gsap';
+import gsap, { Power2 } from 'gsap';
 import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import EditIssueArea from '~/routes/editIssue';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 import { updateIssueStore } from '~/store/issueStore';
+import { backToTop } from '~/utils/backToTop';
 import './issueDashBoard.scss';
 
 const IssueDashBoard = forwardRef<HTMLInputElement>(({ post }, ref) => {
@@ -20,21 +22,24 @@ const IssueDashBoard = forwardRef<HTMLInputElement>(({ post }, ref) => {
         state: 'closed',
       },
     };
-
     updateIssue(query, name);
+    backToTop();
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Your work has been saved',
+      showConfirmButton: false,
+      timer: 3000,
+    });
   };
   const updateIssueProp = {
-    button: '修改',
+    button: 'Edit',
   };
   let menuLayer = useRef(null);
-  const ref2 = typeof ref === 'function' ? ref : (el) => (menuLayer = el);
   const handleBox = (e) => {
     gsap.to(menuLayer, {
       y: e,
       ease: Power2.easeInOut,
-      // startAt: {
-      //   y: 10,
-      // },
     });
   };
   return (

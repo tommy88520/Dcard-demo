@@ -3,7 +3,7 @@ import { devtools, persist } from 'zustand/middleware';
 import { LoginState, MenuState } from './state';
 import { useUserStore } from './userStore';
 
-export const useLoginStore = create<LoginState>()(
+const useLoginStore = create<LoginState>()(
   devtools(
     persist(
       (set) => ({
@@ -30,7 +30,7 @@ export const useLoginStore = create<LoginState>()(
   ),
 );
 
-export const useAnimationStore = create<MenuState>()(
+const useAnimationStore = create<MenuState>()(
   devtools((set, get) => ({
     menuState: {
       initial: false,
@@ -43,3 +43,5 @@ export const useAnimationStore = create<MenuState>()(
     },
   })),
 );
+
+export { useAnimationStore, useLoginStore };

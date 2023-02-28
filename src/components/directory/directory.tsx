@@ -5,7 +5,6 @@ import { staggerText, handleHover, handleHoverExit } from '~/utils/Animations';
 
 const Directory = forwardRef<HTMLInputElement>(({ post }, ref) => {
   let line1 = useRef(null);
-  // const ref: MutableRefObject<HTMLSpanElement | null> = useRef<HTMLSpanElement|null>(null);
 
   const navigate = useNavigate();
 
@@ -23,13 +22,13 @@ const Directory = forwardRef<HTMLInputElement>(({ post }, ref) => {
       aria-hidden
     >
       <h2 className='repo-container__box-border'>
-        <span
+        <div
           onMouseEnter={(e) => handleHover(e)}
           onMouseLeave={(e) => handleHoverExit(e)}
           ref={(el) => (line1 = el)}
         >
           {post}
-        </span>
+        </div>
       </h2>
     </div>
   );

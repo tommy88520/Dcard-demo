@@ -14,6 +14,7 @@ const SearchItem = () => {
       {
         q: value,
         params,
+        noCache: true,
       },
       'search',
     );
@@ -24,6 +25,7 @@ const SearchItem = () => {
         {
           q: '',
           params,
+          noCache: true,
         },
         'search',
       );
