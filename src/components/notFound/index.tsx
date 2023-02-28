@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './NotFound.scss';
+
 export default function NotFound() {
   const navigate = useNavigate();
   const [errorCountdown, setErrorCountDown] = useState(5);

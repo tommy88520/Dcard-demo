@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useLoginStore } from '../store/';
+import { useLoginStore } from '../store';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 const PrivateRoutes = () => {

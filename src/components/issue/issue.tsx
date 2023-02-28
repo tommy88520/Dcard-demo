@@ -1,36 +1,24 @@
-import React, { useState, useCallback, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useLayoutEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import DropdownItem from '../dropDown';
-import EditIssueArea from '~/routes/editIssue';
-import SearchItem from '../search';
-import IssueDashBoard from '~/components/IssueDashBoard';
-import { FloatButton } from 'antd';
-// import Spinner from '~/components/spinner/spinner';
-import NoData from '../noData';
-import { useAllIssueStore } from '~/store/userStore';
-import { setIssuePageStore } from '~/store/issueStore';
-import './issue.scss';
 import { gsap } from 'gsap-trial';
 import ScrollTrigger from 'gsap-trial/ScrollTrigger';
 import ScrollSmoother from 'gsap-trial/ScrollSmoother';
+import { FloatButton } from 'antd';
 
-interface IAllIssue {
-  repoAllIssues: {
-    title: string;
-    number: number;
-    label: {
-      name: string;
-      description: string;
-    };
-    body: string;
-    created_at: Date;
-  }[];
-}
+import EditIssueArea from '~/routes/editIssue';
+import DropdownItem from '../dropDown';
+import SearchItem from '../search';
+import NoData from '../noData';
+import IssueDashBoard from '~/components/IssueDashBoard';
+
+import { useAllIssueStore } from '~/store/userStore';
+import { setIssuePageStore } from '~/store/issueStore';
+
+import './issue.scss';
 
 const IssueItem = () => {
   const params = useParams();
   const { name } = params;
-  const [pageNum, setPageNum] = useState(1);
   const { getRepoAllIssues, repoAllIssues, setLoading, dataStatus } = useAllIssueStore(
     (state) => state,
   );

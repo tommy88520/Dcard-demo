@@ -1,6 +1,6 @@
 import EditIssueArea from '~/routes/editIssue';
-
 import './noData.scss';
+
 const NoData = () => {
   const createIssueProp = {
     button: 'Add Issue',

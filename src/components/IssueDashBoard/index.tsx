@@ -1,12 +1,12 @@
-import React, { forwardRef, useEffect, useRef } from 'react';
-import gsap, { Power2 } from 'gsap';
-import ReactMarkdown from 'react-markdown';
+import React, { forwardRef, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { CloseOutlined } from '@ant-design/icons';
+import gsap, { Power2 } from 'gsap';
 import { Button, Tooltip } from 'antd';
-import EditIssueArea from '~/routes/editIssue';
+import ReactMarkdown from 'react-markdown';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { CloseOutlined } from '@ant-design/icons';
 
+import EditIssueArea from '~/routes/editIssue';
 import { updateIssueStore } from '~/store/issueStore';
 import { backToTop } from '~/utils/backToTop';
 import './issueDashBoard.scss';

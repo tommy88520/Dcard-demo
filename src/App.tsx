@@ -5,7 +5,6 @@ import Navigation from './routes/navigation';
 const SignIn = lazy(() => import('./routes/signIn'));
 const Repo = lazy(() => import('./routes/repo'));
 const Issue = lazy(() => import('./routes/issue'));
-const Example4 = lazy(() => import('./routes/testPost/example4'));
 const NotFound = lazy(() => import('~/components/notFound'));
 import PrivateRoutes from './utils/authguard';
 import Spinner from './components/spinner/spinner';
@@ -22,7 +21,6 @@ function App() {
           <Route element={<PrivateRoutes />}>
             <Route path='/repo/:name' element={<Issue />} />
             <Route path='repo' element={<Repo />} />
-            <Route path='post' element={<Example4 />} />
           </Route>
           <Route path='*' element={<NotFound />} />
         </Route>
