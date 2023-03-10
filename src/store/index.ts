@@ -31,15 +31,13 @@ const useLoginStore = create<LoginState>()(
 );
 
 const useAnimationStore = create<MenuState>()(
-  devtools((set, get) => ({
+  devtools((set) => ({
     menuState: {
       initial: false,
       clicked: false,
     },
     toggleMenu: (query) => {
       set(() => ({ menuState: query }));
-
-      console.log(get().menuState);
     },
   })),
 );

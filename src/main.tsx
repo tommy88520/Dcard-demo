@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import App from './App';
 
 // styles
-import './index.css';
+import './index.scss';
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <QueryClientProvider client={queryClient}>

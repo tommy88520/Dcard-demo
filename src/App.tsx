@@ -22,6 +22,7 @@ function App() {
             <Route path='/repo/:name' element={<Issue />} />
             <Route path='repo' element={<Repo />} />
           </Route>
+          <Route path='/notFound' element={<NotFound />} />
           <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>

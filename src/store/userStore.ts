@@ -35,7 +35,7 @@ const useUserStore = create<UserDataState>()(
               set(() => ({ userData: res.data }));
               useLoginStore.getState().toggleLogin();
             })
-            .catch((error) => {
+            .catch(() => {
               useLoginStore.getState().toggleLogOut();
             });
         },
@@ -66,7 +66,7 @@ const useRepoStore = create<UserRepoState>()(
               set((state) => ({ userRepo: (state.userRepo = res.data) }));
               return res.data;
             })
-            .catch((error) => {
+            .catch(() => {
               console.log('未登入or登入失敗');
             });
           return result;
@@ -122,8 +122,12 @@ const useAllIssueStore = create<RepoAllIssueState>()(
           }));
         })
         .catch((error) => {
-          useLoginStore.getState().toggleLogOut();
-          console.log('未登入or登入失敗');
+          if (error.response.status == 401) {
+            useLoginStore.getState().toggleLogOut();
+            console.log('未登入or登入失敗');
+          } else {
+            location.href = '/notFound';
+          }
         });
     },
     setRepoAllIssues: async (data) => {

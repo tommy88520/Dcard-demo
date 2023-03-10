@@ -3,6 +3,8 @@ import axios from 'axios';
 import { devtools, persist } from 'zustand/middleware';
 import { GetIssueDetail, CreateIssue, UpdateIssue, IssuePageNumber } from './state';
 import { useAllIssueStore } from './userStore';
+import { useLoginStore } from '~/store';
+
 const userRequest = axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND_BASE_URL,
   headers: {
@@ -37,7 +39,12 @@ const useGetIssueDetailStore = create<GetIssueDetail>()(
               set(() => ({ issueDetail: res.data }));
             })
             .catch((error) => {
-              console.log('未登入or登入失敗');
+              if (error.response.status == 401) {
+                useLoginStore.getState().toggleLogOut();
+                console.log('未登入or登入失敗');
+              } else {
+                location.href = '/notFound';
+              }
             });
         },
       }),
@@ -79,7 +86,7 @@ const createIssueStore = create<CreateIssue>()(
           }, 1000); //github api會延遲
           setIssuePageStore.getState().setIssuePageNumber(1);
         })
-        .catch((error) => {
+        .catch(() => {
           console.log('未登入or登入失敗');
         });
     },
@@ -89,7 +96,7 @@ const createIssueStore = create<CreateIssue>()(
 const updateIssueStore = create<UpdateIssue>()(
   devtools((set) => ({
     updateMessages: '',
-    updateIssue: async (query, name) => {
+    updateIssue: async (query) => {
       const token = JSON.parse(localStorage.getItem('dcard-login') || '{}');
       await userRequest
         .patch('user/updateIssue', query, {
@@ -117,7 +124,7 @@ const updateIssueStore = create<UpdateIssue>()(
           }, 1000); //github api會延遲
           setIssuePageStore.getState().setIssuePageNumber(1);
         })
-        .catch((error) => {
+        .catch(() => {
           console.log('未登入or登入失敗');
         });
     },

@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Select } from 'antd';
-// import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { useAllIssueStore } from '~/store/userStore';
-// import { backToTop } from '~/utils/backToTop';
 
 interface IDropProps {
   dropDownOption: { label: string; value: string }[];

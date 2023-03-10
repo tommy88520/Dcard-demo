@@ -41,7 +41,7 @@ const IssueItem = () => {
   }, [issuePageNumber]);
 
   const el = useRef();
-  const q = gsap.utils.selector(el);
+  // const q = gsap.utils.selector(el);
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
   useLayoutEffect(() => {
@@ -103,8 +103,10 @@ const IssueItem = () => {
         {repoAllIssues &&
           repoAllIssues?.map((post, i) => {
             if (repoAllIssues.length === i + 1) {
+              // @ts-ignore
               return <IssueDashBoard key={i} ref={lastPostRef} post={post} />;
             }
+            // @ts-ignore
             return <IssueDashBoard key={i} post={post} />;
           })}
         {!hasNextPage && <div className='issue-section__no-more'>No more data available!</div>}
@@ -112,6 +114,7 @@ const IssueItem = () => {
     );
   };
   return (
+    // @ts-ignore
     <div className='issue-section' ref={el} id='smooth-wrapper'>
       <div className='issue-section__header'>
         <DropdownItem dropDownOption={dropDownOption} />

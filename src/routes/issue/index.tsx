@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useLocation, useRoutes } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import IssueItem from '~/components/issue/issue';
 import Spinner from '~/components/spinner/spinner';
 import { setIssuePageStore } from '~/store/issueStore';
@@ -13,7 +13,6 @@ const Issue = () => {
   useEffect(() => {
     setIssuePageNumber(1);
     setRepoAllIssues('');
-    console.log('Route changed to:', location.pathname);
   }, [location]);
 
   useEffect(() => {
