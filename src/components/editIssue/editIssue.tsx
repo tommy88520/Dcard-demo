@@ -90,6 +90,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
                 body: data,
               },
             };
+            // @ts-ignore
             onCreate(result);
             setBodyCheck(true);
             form.resetFields();

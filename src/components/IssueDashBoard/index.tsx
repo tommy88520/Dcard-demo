@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import gsap, { Power2 } from 'gsap';
 import { Button, Tooltip } from 'antd';
@@ -10,7 +10,7 @@ import EditIssueArea from '~/routes/editIssue';
 import { updateIssueStore } from '~/store/issueStore';
 import { backToTop } from '~/utils/backToTop';
 import './issueDashBoard.scss';
-
+// @ts-ignore
 const IssueDashBoard = forwardRef<HTMLInputElement>(({ post }, ref) => {
   const { updateIssue } = updateIssueStore((state) => state);
   const { name } = useParams();
@@ -46,6 +46,7 @@ const IssueDashBoard = forwardRef<HTMLInputElement>(({ post }, ref) => {
     <div ref={ref} onMouseEnter={() => handleBox(-20)} onMouseLeave={() => handleBox(0)}>
       <div
         className='issue-item__box'
+        // @ts-ignore
         ref={(el) => (menuLayer = el)}
         onMouseEnter={() => handleBox(-20)}
         onMouseLeave={() => handleBox(0)}

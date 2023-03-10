@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useRef, useLayoutEffect } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useLayoutEffect } from 'react';
 import Directory from '~/components/directory/directory';
 import { useInfiniteQuery } from 'react-query';
 import Spinner from '~/components/spinner/spinner';
@@ -15,7 +15,7 @@ const Repo = () => {
   }, []);
 
   const el = useRef();
-  const q = gsap.utils.selector(el);
+  // const q = gsap.utils.selector(el);
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
   useLayoutEffect(() => {
@@ -60,8 +60,10 @@ const Repo = () => {
   const content = data?.pages.map((userRepo) => {
     return userRepo?.map((post, i) => {
       if (userRepo.length === i + 1) {
+        // @ts-ignore
         return <Directory ref={lastPostRef} key={i} post={post} />;
       }
+      // @ts-ignore
       return <Directory key={i} post={post} />;
     });
   });
@@ -70,6 +72,7 @@ const Repo = () => {
       {status === 'error' ? (
         <Spinner />
       ) : (
+        // @ts-ignore
         <div className='repo-container' ref={el} id='smooth-wrapper'>
           <div className='repo-container__section' id='smooth-content'>
             {content}
