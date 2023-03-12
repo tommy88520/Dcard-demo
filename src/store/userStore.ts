@@ -6,7 +6,7 @@ import { useLoginStore } from '~/store';
 import { setIssuePageStore } from './issueStore';
 
 const userRequest = axios.create({
-  baseURL: import.meta.env.VITE_APP_BACKEND_BASE_URL,
+  baseURL: import.meta.env.VITE_APP_BACKEND_BASE_URL || 'http://localhost:3333/',
   headers: {
     Accept: 'application/vnd.github+json',
   },

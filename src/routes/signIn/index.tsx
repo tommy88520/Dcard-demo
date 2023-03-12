@@ -19,7 +19,10 @@ const SignIn = () => {
     if (login) navigate('/repo');
   }, [login]);
   const handleLogin = async () => {
-    window.open(`${import.meta.env.VITE_APP_BACKEND_BASE_URL}user/github/login`, '_self');
+    window.open(
+      `${import.meta.env.VITE_APP_BACKEND_BASE_URL || 'http://localhost:3333/'}user/github/login`,
+      '_self',
+    );
   };
   return (
     <div className='login-container'>
