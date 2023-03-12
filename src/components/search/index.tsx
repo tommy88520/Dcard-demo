@@ -36,7 +36,7 @@ const SearchItem = () => {
         allowClear
         placeholder='input search text'
         onSearch={onSearch}
-        style={{ width: 400, paddingLeft: 10 }}
+        style={{ paddingLeft: 10 }}
         maxLength={30}
         onChange={changeSearch}
       />

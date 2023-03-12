@@ -30,6 +30,7 @@ interface CollectionCreateFormProps {
   issueDetail: any;
   setBodyCheck: (e: boolean) => void;
   number: number;
+  mobileEditer: boolean;
 }
 const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   open,
@@ -39,6 +40,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   issueDetail,
   setBodyCheck,
   number,
+  mobileEditer,
 }) => {
   const [form] = Form.useForm();
   const { Option } = Select;
@@ -63,7 +65,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   return (
     <Modal
       open={open}
-      title='Edit a collection'
+      title={`Edit No.${number} issue`}
       okText='Submit'
       cancelText='Cancel'
       confirmLoading={confirmLoading}
@@ -72,9 +74,9 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
         form
           .validateFields()
           .then((values) => {
-            const data =
-              editorRef.current.editorInst.getMarkdown() ||
-              mobileRef.current.editorInst.getMarkdown();
+            const data = mobileEditer
+              ? mobileRef.current.editorInst.getMarkdown()
+              : editorRef.current.editorInst.getMarkdown();
             if (data.length < 30) {
               setBodyCheck(false);
               Swal.fire('描述字數不夠');
@@ -159,9 +161,20 @@ const EditIssueArea: FC<IProps> = ({ issueProp }) => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [bodyCheck, setBodyCheck] = useState(true);
+  const [mobileEditer, setMobileEditer] = useState(false);
   const { createIssue } = createIssueStore((state) => state);
   const { updateIssue } = updateIssueStore((state) => state);
   const { getIssueDetail, issueDetail } = useGetIssueDetailStore((state) => state);
+  function handleResize() {
+    if (window.innerWidth < 768) {
+      setMobileEditer(true);
+    } else {
+      setMobileEditer(false);
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, [window.innerWidth]);
 
   const onCreate = (values: Values) => {
     if (issueProp.number) {
@@ -187,6 +200,7 @@ const EditIssueArea: FC<IProps> = ({ issueProp }) => {
       getIssueDetail(query);
     }
     setOpen(true);
+    handleResize();
   };
   return (
     <div className='edit-container'>
@@ -204,6 +218,7 @@ const EditIssueArea: FC<IProps> = ({ issueProp }) => {
           issueDetail={issueDetail}
           setBodyCheck={setBodyCheck}
           number={number}
+          mobileEditer={mobileEditer}
         />
       )}
     </div>
