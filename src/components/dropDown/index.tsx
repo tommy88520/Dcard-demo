@@ -28,7 +28,7 @@ const DropdownItem: React.FC<IDropProps> = ({ dropDownOption }) => {
   return (
     <Select
       showSearch
-      placeholder='Select a person'
+      placeholder='Select issue status'
       optionFilterProp='children'
       onChange={onChange}
       filterOption={(input, option) =>
