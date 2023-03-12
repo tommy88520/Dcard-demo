@@ -1,8 +1,5 @@
-import React, { useCallback, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { gsap } from 'gsap-trial';
-import ScrollTrigger from 'gsap-trial/ScrollTrigger';
-import ScrollSmoother from 'gsap-trial/ScrollSmoother';
 import { FloatButton } from 'antd';
 
 import EditIssueArea from '~/routes/editIssue';
@@ -41,20 +38,6 @@ const IssueItem = () => {
   }, [issuePageNumber]);
 
   const el = useRef();
-  // const q = gsap.utils.selector(el);
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
-  useLayoutEffect(() => {
-    const smoother = ScrollSmoother.create({
-      smooth: 2,
-      effects: true,
-      smoothTouch: 0.1,
-    });
-    return () => {
-      smoother.kill();
-    };
-  }, []);
-
   const { loading, hasNextPage } = dataStatus;
 
   const issueObserver = useRef<IntersectionObserver | null>(null);

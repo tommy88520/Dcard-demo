@@ -1,12 +1,8 @@
-import { Fragment, useCallback, useEffect, useRef, useLayoutEffect } from 'react';
-import Directory from '~/components/directory/directory';
+import { Fragment, useCallback, useEffect, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import Directory from '~/components/directory/directory';
 import Spinner from '~/components/spinner/spinner';
 import { useRepoStore } from '~/store/userStore';
-
-import { gsap } from 'gsap-trial';
-import ScrollTrigger from 'gsap-trial/ScrollTrigger';
-import ScrollSmoother from 'gsap-trial/ScrollSmoother';
 
 const Repo = () => {
   const { userRepo, getUserRepo } = useRepoStore((state) => state);
@@ -15,19 +11,6 @@ const Repo = () => {
   }, []);
 
   const el = useRef();
-  // const q = gsap.utils.selector(el);
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
-  useLayoutEffect(() => {
-    const smoother = ScrollSmoother.create({
-      smooth: 2,
-      effects: true,
-      smoothTouch: 0.1,
-    });
-    return () => {
-      smoother.kill();
-    };
-  }, []);
 
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data, status } = useInfiniteQuery(
     '/repo',
@@ -39,7 +22,6 @@ const Repo = () => {
     },
   );
   const intObserver = useRef<IntersectionObserver | null>(null);
-  // const containerRef = useRef<IntersectionObserver | null>(null);
   const lastPostRef = useCallback(
     (post) => {
       if (isFetchingNextPage) return;
