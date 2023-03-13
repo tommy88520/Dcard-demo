@@ -5,16 +5,15 @@ const SearchItem = () => {
   const { getRepoAllIssues } = useAllIssueStore((state) => state);
   const params = {
     sort: 'created',
-    order: 'desc',
     per_page: 10,
     page: 1,
+    noCache: true,
   };
   const onSearch = (value: string) => {
     getRepoAllIssues(
       {
         q: value,
-        params,
-        noCache: true,
+        ...params,
       },
       'search',
     );
@@ -24,8 +23,7 @@ const SearchItem = () => {
       getRepoAllIssues(
         {
           q: '',
-          params,
-          noCache: true,
+          ...params,
         },
         'search',
       );

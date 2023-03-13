@@ -73,12 +73,9 @@ const createIssueStore = create<CreateIssue>()(
             getRepoAllIssues(
               {
                 ...getIssueQuery,
-                params: {
-                  sort: 'created',
-                  order: 'desc',
-                  per_page: 10,
-                  page: 1,
-                },
+                sort: 'created',
+                per_page: 10,
+                page: 1,
                 noCache: true,
               },
               'search',
@@ -111,12 +108,9 @@ const updateIssueStore = create<UpdateIssue>()(
             getRepoAllIssues(
               {
                 ...getIssueQuery,
-                params: {
-                  sort: 'created',
-                  order: 'desc',
-                  per_page: 10,
-                  page: 1,
-                },
+                sort: 'created',
+                per_page: 10,
+                page: 1,
                 noCache: true,
               },
               'search',

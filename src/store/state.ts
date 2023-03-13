@@ -48,12 +48,10 @@ export interface RepoAllIssueState {
     repo: string;
     q: string;
     label: string;
-    params: {
-      sort: string;
-      order: string;
-      per_page: number;
-      page: number;
-    };
+    sort: string;
+    order: string;
+    per_page: number;
+    page: number;
     noCache: boolean;
   };
   setLoading: () => void;

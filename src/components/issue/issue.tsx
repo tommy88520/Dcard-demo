@@ -4,6 +4,7 @@ import { FloatButton } from 'antd';
 
 import EditIssueArea from '~/routes/editIssue';
 import DropdownItem from '../dropDown';
+import OrderDropdownItem from '../dropDown/orderDropDown';
 import SearchItem from '../search';
 import NoData from '../noData';
 import IssueDashBoard from '~/components/IssueDashBoard';
@@ -25,12 +26,9 @@ const IssueItem = () => {
     getRepoAllIssues(
       {
         repo: name,
-        params: {
-          sort: 'created',
-          order: 'desc',
-          per_page: 10,
-          page: issuePageNumber,
-        },
+        sort: 'created',
+        per_page: 10,
+        page: issuePageNumber,
         noCache: false,
       },
       'page',
@@ -76,6 +74,17 @@ const IssueItem = () => {
       value: 'Done',
     },
   ];
+
+  const orderDropDownOption = [
+    {
+      label: 'DESC',
+      value: 'desc',
+    },
+    {
+      label: 'ASC',
+      value: 'asc',
+    },
+  ];
   const createIssueProp = {
     button: 'Add Issue',
     number: 0,
@@ -100,7 +109,11 @@ const IssueItem = () => {
     // @ts-ignore
     <div className='issue-section' ref={el} id='smooth-wrapper'>
       <div className='issue-section__header'>
-        <DropdownItem dropDownOption={dropDownOption} />
+        <div className='issue-section__dropDown'>
+          <DropdownItem dropDownOption={dropDownOption} />
+          <OrderDropdownItem orderDropDownOption={orderDropDownOption} />
+        </div>
+
         <SearchItem />
         <EditIssueArea issueProp={createIssueProp} />
       </div>
