@@ -85,12 +85,10 @@ const useAllIssueStore = create<RepoAllIssueState>()(
       repo: '',
       q: '',
       label: '',
-      params: {
-        sort: 'created',
-        order: 'desc',
-        per_page: 10,
-        page: 1,
-      },
+      sort: 'created',
+      order: 'desc',
+      per_page: 10,
+      page: 1,
       noCache: true,
     },
     dataStatus: {
@@ -111,7 +109,7 @@ const useAllIssueStore = create<RepoAllIssueState>()(
           params: get().getIssueQuery,
         })
         .then((res) => {
-          if (type === 'search' || query.params.page === 1) {
+          if (type === 'search' || query.page === 1) {
             set(() => ({ repoAllIssues: res.data }));
             setIssuePageStore.getState().setIssuePageNumber(1);
           } else {
@@ -122,7 +120,8 @@ const useAllIssueStore = create<RepoAllIssueState>()(
           }));
         })
         .catch((error) => {
-          if (error.response.status == 401) {
+          console.log(error);
+          if (error.response?.status == 401) {
             useLoginStore.getState().toggleLogOut();
             console.log('未登入or登入失敗');
           } else {

@@ -3,20 +3,20 @@ import { Select } from 'antd';
 import { useAllIssueStore } from '~/store/userStore';
 
 interface IDropProps {
-  dropDownOption: { label: string; value: string }[];
+  orderDropDownOption: { label: string; value: string }[];
 }
 
-const DropdownItem: React.FC<IDropProps> = ({ dropDownOption }) => {
+const OrderDropdownItem: React.FC<IDropProps> = ({ orderDropDownOption }) => {
   const { getRepoAllIssues } = useAllIssueStore((state) => state);
 
   const onChange = (value: string) => {
     getRepoAllIssues(
       {
-        label: value,
         sort: 'created',
+        order: value,
         per_page: 10,
         page: 1,
-        noCache: false,
+        noCache: true,
       },
       'search',
     );
@@ -25,15 +25,15 @@ const DropdownItem: React.FC<IDropProps> = ({ dropDownOption }) => {
   return (
     <Select
       showSearch
-      placeholder='Select issue status'
+      placeholder='Select date sort'
       optionFilterProp='children'
       onChange={onChange}
       filterOption={(input, option) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
       }
-      options={dropDownOption}
+      options={orderDropDownOption}
     />
   );
 };
 
-export default DropdownItem;
+export default OrderDropdownItem;
