@@ -9,7 +9,6 @@
     background-position: center;
     display: flex;
     justify-content: flex-end;
-    overflow: hidden;
   }
   &__box {  
     margin: 250px 10% 0 0;
@@ -23,11 +22,6 @@
     width: 400px;
     height: 436px;
     filter: blur(3px);
-    box-shadow: 0 1px 1px rgba(0,0,0,0.1), 
-      0 2px 2px rgba(0,0,0,0.1), 
-      0 4px 4px rgba(0,0,0,0.1), 
-      0 8px 8px rgba(0,0,0,0.1),
-      0 16px 16px rgba(0,0,0,0.1);
     background-image: url('../../assets/dcard-logo-blue.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -73,9 +67,7 @@
     filter: blur(0);
     }
     p {
-      // font-family: var(--font-serif);
       font-size: 1.125rem;
-      // font-style: italic;
       line-height: 1.35;
       color: transparent;
       transition: .5s;
@@ -99,10 +91,7 @@
       background-image: url('../../assets/dcard-logo-w.png');
     }
   }
-  
 
-
-  
   &__content {
     position: absolute;
     display: flex;
@@ -120,13 +109,11 @@
     }
   }
 
-
   &:has(.login-container__box2:hover) {
     .login-container__box {
       background-image: url('../../assets/dcard-logo-w.png');
     }
   }
-
 
   @media (max-width: 768px) {
     &__box-background {
