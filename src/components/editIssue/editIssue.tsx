@@ -65,7 +65,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   return (
     <Modal
       open={open}
-      title={`Edit No.${number} issue`}
+      title={number == 0 ? `Create a issue` : `Edit No.${number} issue`}
       okText='Submit'
       cancelText='Cancel'
       confirmLoading={confirmLoading}
